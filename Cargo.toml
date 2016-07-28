@@ -2,5 +2,13 @@
 name = "sgp4"
 version = "0.1.0"
 authors = ["Nathan Bergey <nathan.bergey@gmail.com>"]
+license = "MIT"
+readme = "README.markdown"
+repository = "https://github.com/natronics/rust-sgp4"
+documentation = "https://natronics.github.io/rust-sgp4/"
+description = """
+Simplified Perturbations Models are a set of models used for satellites and objects relative to the Earth-centered inertial coordinate system. These are often referred to collectively as SGP4 because of how that particular model is used with nearly all low Earth orbit satellites.
+"""
+keywords = ["scientific computing", "satellites", "spacecraft", "space", "sgp4", "orbits", "perturbations", "gravity", "astrophysics", "astromechanics"]
 
 [dependencies]
