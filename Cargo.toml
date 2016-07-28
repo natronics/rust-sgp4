@@ -1,0 +1,6 @@
+[package]
+name = "sgp4"
+version = "0.1.0"
+authors = ["Nathan Bergey <nathan.bergey@gmail.com>"]
+
+[dependencies]
