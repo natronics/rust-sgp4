@@ -28,7 +28,7 @@ pub struct TLE {
     pub classification: char,
 
     /// International Designator
-    pub int_designator: &'static str,
+    pub int_designator: [char;8],
 
     /// Epoch Year
     pub epoch_year: u16,
@@ -72,13 +72,26 @@ pub struct TLE {
 
 
 impl TLE {
-
     /// Read a TLE from Strings
-    pub fn load_from_str(self, line1: String, line2: String, line3: String) -> TLE {
+    ///
+    /// ### Example
+    ///
+    ///
+    /// ```
+    /// extern crate sgp4;
+    ///
+    /// let line1 = "ISS (ZARYA)";
+    /// let line2 = "1 25544U 98067A   16210.59822142  .00000812  00000-0  11901-4 0  9990";
+    /// let line3 = "2 25544  51.6406 211.4156 0001780  85.8307 274.3426 15.54888439 11433";
+    ///
+    /// let tle = sgp4::TLE::load_from_str(line1, line2, line3);
+    /// ```
+    ///
+    pub fn load_from_str(line1: &str, line2: &str, line3: &str) -> TLE {
 
         let sat_number = 0;
         let classification = 'U';
-        let int_designator = "";
+        let int_designator = ['9', '8', '0', '6', '7', 'A', ' ', ' '];
         let epoch_year = 0;
         let epoch_day = 0.0;
         let first_mean_motion = 0.0;
@@ -115,8 +128,17 @@ impl TLE {
 }
 
 
+#[cfg(test)]
 mod tests {
+
+    use super::TLE;
+
     #[test]
-    fn it_works() {
+    fn spacetrack_report_3_sgp4_test_case() {
+        let line1 = "";
+        let line2 = "1 88888U          80275.98708465  .00073094  13844-3  66816-4 0     8";
+        let line3 = "2 88888  72.8435 115.9689 0086731  52.6988 110.5714 16.05824518   105";
+
+        let tle = TLE::load_from_str(line1, line2, line3);
     }
 }
