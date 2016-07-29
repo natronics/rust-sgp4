@@ -9,7 +9,8 @@ matrix:
 
 after_success: |
     [ $TRAVIS_RUST_VERSION = stable ] &&
-    cargo doc --no-deps &&
+    cargo build &&
+    rustdoc src/lib.rs --crate-name sgp4 -o /home/natronics/Code/natronics.github.io/rust-sgp4/target/doc -L dependency=/home/natronics/Code/natronics.github.io/rust-sgp4/target/debug -L dependency=/home/natronics/Code/natronics.github.io/rust-sgp4/target/debug/deps --html-in-header=docs/header_imports.html &&
     echo '<meta http-equiv=refresh content=0;url=sgp4/index.html>' > target/doc/index.html &&
     cd target/doc/ &&
     git init &&
