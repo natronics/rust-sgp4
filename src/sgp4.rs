@@ -12,18 +12,17 @@
 
 use tle;
 
-/// k_e
-const ke: f64 = 0.743669161e-1;
+/// $k_e = 7.43669161 \times 10\^{-2}$  Orbital constant for Earth defined as $\sqrt{GM_{\oplus}}$ where $G$ is Newton’s universal gravitational constant and $M_{\oplus}$ is the mass of the Earth.
+pub const ke: f64 = 7.43669161e-2;
 
-/// k_2
-const k2: f64 = 5.413080e-4;
+/// $k_2 = 5.413080 \times 10\^{-4}$  Harmonic gravity constant for the SGP4 model. Defined as $\frac{1}{2}J_2aE\^2$.
+pub const k2: f64 = 5.413080e-4;
 
 /// ## Compute
 ///
 /// Reading a TLE will give NORAD mean elements. The original mean motion
 /// $n_0$ and semimajor axis $a_0$ are first recovered from the input elements
-/// by the equations:
-///
+/// by the equations
 pub fn compute(tle: tle::TLE) {
 
     // Copy from NORAD elements
