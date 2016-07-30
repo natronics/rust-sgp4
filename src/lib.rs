@@ -8,6 +8,8 @@ orbit satellites.
 
 The SGP4 and SDP4 models were published as FORTRAN IV in 1988. It has also
 been ported to C. This is a port to Rust.
+
+Original paper: [Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf](../Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf)
 */
 
 pub mod tle;
