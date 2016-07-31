@@ -14,3 +14,4 @@ Original paper: [Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf](../Hoots_Roehri
 
 pub mod tle;
 pub mod sgp4;
+pub mod coordinates;

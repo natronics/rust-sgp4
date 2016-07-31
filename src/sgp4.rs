@@ -11,6 +11,7 @@
 #![allow(non_upper_case_globals)]
 
 use tle;
+use coordinates;
 
 /// $k_e = 7.43669161 \times 10\^{-2}$  Orbital constant for Earth defined as $\sqrt{GM_{\oplus}}$ where $G$ is Newton’s universal gravitational constant and $M_{\oplus}$ is the mass of the Earth. Units: $(\frac{\mathrm{Earth\ radii}}{\mathrm{minute}})\^{\frac{3}{2}}$
 pub const ke: f64 = 7.43669161e-2;
@@ -35,7 +36,7 @@ pub const k2: f64 = 5.413080e-4;
 /// $$n_o'' = \frac{n_o}{1 + \delta_o}$$
 ///
 /// $$a_o'' = \frac{a_o}{1 - \delta_o}$$
-pub fn compute(tle: tle::TLE) {
+pub fn compute(tle: tle::TLE) -> coordinates::J2000 {
 
     // Copy from NORAD elements
     let n0 = tle.mean_motion;
@@ -54,12 +55,19 @@ pub fn compute(tle: tle::TLE) {
     let d0 = (3.0 * k2  * ( 3.0 * cos2_i0 - 1.0)) / (2.0 * a0 * a0 * ( 1.0 - e02).powf(3.0/2.0));
     let n0_dp = n0 / (1.0 + d0);
     let a0_dp = a0 / (1.0 - d0);
+
+    coordinates::J2000 {
+        X: 0.0,
+        Y: 0.0,
+        Z: 0.0,
+    }
 }
 
 #[cfg(test)]
 mod tests {
 
     use tle::TLE;
+    use coordinates::J2000;
     use super::compute;
 
     #[test]
@@ -67,14 +75,19 @@ mod tests {
         // This testcase is from "SPACETRACK REPORT NO. 3, Models for
         // Propagation of NORAD Element Sets, Hoots & Roehrich 1980
         // pg. 81:
-        let line1 = "";
-        let line2 = "1 88888U          80275.98708465  .00073094  13844-3  66816-4 0     8";
-        let line3 = "2 88888  72.8435 115.9689 0086731  52.6988 110.5714 16.05824518   105";
-
-        // Load our TLE:
-        let tle = TLE::load_from_str(line1, line2, line3);
+        let tle = TLE::load_from_str(
+            "Test",
+            "1 88888U          80275.98708465  .00073094  13844-3  66816-4 0     8",
+            "2 88888  72.8435 115.9689 0086731  52.6988 110.5714 16.05824518   105",
+        );
 
         // Compute
         let result0 = compute(tle);
+        assert_eq!(result0, J2000 {
+            X: 0.0,
+            Y: 0.0,
+            Z: 0.0,
+        });
+
     }
 }
