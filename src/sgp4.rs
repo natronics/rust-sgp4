@@ -21,8 +21,20 @@ pub const k2: f64 = 5.413080e-4;
 /// ## Compute
 ///
 /// Reading a TLE will give NORAD mean elements. The original mean motion
-/// $n_0$ and semimajor axis $a_0$ are first recovered from the input elements
-/// by the equations
+/// $n_o''$ and semimajor axis $a_o''$ are first recovered from the input elements
+/// by the equations:
+///
+/// $$a_1 = \left( \frac{k_e}{n_o} \right)\^{\frac{2}{3}}$$
+///
+/// $$\delta_1 = \frac{3}{2}~\frac{k_2}{a_1\^2}~\frac{(3\cos\^2i_o - 1)}{(1 - e_o\^2)\^{\frac{3}{2}}}$$
+///
+/// $$a_o = a_1 \left( 1 - \frac{1}{3}~\delta_1 - \delta_1\^2 - \frac{134}{81}~\delta_1\^3 \right)$$
+///
+/// $$\delta_o = \frac{3}{2}~\frac{k_2}{a_o\^2}~\frac{(3\cos\^2i_o - 1)}{(1 - e_o\^2)\^{\frac{3}{2}}}$$
+///
+/// $$n_o'' = \frac{n_o}{1 + \delta_o}$$
+///
+/// $$a_o'' = \frac{a_o}{1 - \delta_o}$$
 pub fn compute(tle: tle::TLE) {
 
     // Copy from NORAD elements
