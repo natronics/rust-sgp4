@@ -36,7 +36,7 @@ pub const k2: f64 = 5.413080e-4;
 /// $$n_o'' = \frac{n_o}{1 + \delta_o}$$
 ///
 /// $$a_o'' = \frac{a_o}{1 - \delta_o}$$
-pub fn compute(tle: tle::TLE) -> coordinates::J2000 {
+pub fn compute(tle: tle::TLE) -> coordinates::TEME {
 
     // Copy from NORAD elements
     let n0 = tle.mean_motion;
@@ -56,7 +56,10 @@ pub fn compute(tle: tle::TLE) -> coordinates::J2000 {
     let n0_dp = n0 / (1.0 + d0);
     let a0_dp = a0 / (1.0 - d0);
 
-    coordinates::J2000 {
+
+
+    // Return coordinates
+    coordinates::TEME {
         X: 0.0,
         Y: 0.0,
         Z: 0.0,
@@ -67,7 +70,7 @@ pub fn compute(tle: tle::TLE) -> coordinates::J2000 {
 mod tests {
 
     use tle::TLE;
-    use coordinates::J2000;
+    use coordinates::TEME;
     use super::compute;
 
     #[test]
@@ -83,7 +86,7 @@ mod tests {
 
         // Compute
         let result0 = compute(tle);
-        assert_eq!(result0, J2000 {
+        assert_eq!(result0, TEME {
             X: 0.0,
             Y: 0.0,
             Z: 0.0,
