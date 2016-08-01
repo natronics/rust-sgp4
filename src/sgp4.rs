@@ -34,6 +34,7 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     let cos2_i0 = cos_i0 * cos_i0;
     let e02 = e0 * e0;
 
+
     // ************************************************************************
     // Section 1.
     // Convert from NORAD (TLE) mean elements to SGP4 elements.
@@ -51,11 +52,31 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     //      2 a₁²   (1 - eₒ²)³/₂
     let d1 = (3.0 * k2  * ( 3.0 * cos2_i0 - 1.0)) / (2.0 * a1 * a1 * ( 1.0 - e02).powf(3.0/2.0));
 
-
+    //         ⌈     1           134    ⌉
+    // aₒ = a₁ | 1 - -δ₁ - δ₁² - ---δ₁³ |
+    //         ⌊     3            81    ⌋
     let a0 = a1 * ( 1.0 - (d1/3.0) - (d1 * d1) - (134.0 * d1 * d1 * d1 / 81.0));
+
+    //      3 k₂   (3 cos² iₒ - 1)
+    // δₒ = - --- ----------------
+    //      2 aₒ²   (1 - eₒ²)³/₂
     let d0 = (3.0 * k2  * ( 3.0 * cos2_i0 - 1.0)) / (2.0 * a0 * a0 * ( 1.0 - e02).powf(3.0/2.0));
+
+    //          nₒ
+    // nₒ" = --------
+    //       (1 + δₒ)
     let n0_dp = n0 / (1.0 + d0);
+
+    //          aₒ
+    // aₒ" = --------
+    //       (1 - δₒ)
     let a0_dp = a0 / (1.0 - d0);
+
+
+    // ************************************************************************
+    // Section 2.
+    // Determine perigee so we can deicide which SGP4 variant to use.
+
 
 
     // TODO: dummy
