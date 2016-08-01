@@ -19,24 +19,10 @@ pub const ke: f64 = 7.43669161e-2;
 /// $k_2 = 5.413080 \times 10\^{-4}$  Harmonic gravity constant for the SGP4 model. Defined as $\frac{1}{2}J_2aE\^2$.
 pub const k2: f64 = 5.413080e-4;
 
-/// ## Compute
+/// ## Propagate
 ///
-/// Reading a TLE will give NORAD mean elements. The original mean motion
-/// $n_o''$ and semimajor axis $a_o''$ are first recovered from the input elements
-/// by the equations:
-///
-/// $$a_1 = \left( \frac{k_e}{n_o} \right)\^{\frac{2}{3}}$$
-///
-/// $$\delta_1 = \frac{3}{2}~\frac{k_2}{a_1\^2}~\frac{(3\cos\^2i_o - 1)}{(1 - e_o\^2)\^{\frac{3}{2}}}$$
-///
-/// $$a_o = a_1 \left( 1 - \frac{1}{3}~\delta_1 - \delta_1\^2 - \frac{134}{81}~\delta_1\^3 \right)$$
-///
-/// $$\delta_o = \frac{3}{2}~\frac{k_2}{a_o\^2}~\frac{(3\cos\^2i_o - 1)}{(1 - e_o\^2)\^{\frac{3}{2}}}$$
-///
-/// $$n_o'' = \frac{n_o}{1 + \delta_o}$$
-///
-/// $$a_o'' = \frac{a_o}{1 - \delta_o}$$
-pub fn compute(tle: tle::TLE) -> coordinates::TEME {
+/// Propagate the orbit to the desired time.
+pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
 
     // Copy from NORAD elements
     let n0 = tle.mean_motion;
@@ -48,16 +34,31 @@ pub fn compute(tle: tle::TLE) -> coordinates::TEME {
     let cos2_i0 = cos_i0 * cos_i0;
     let e02 = e0 * e0;
 
-    // Convert NORAD mean elements
+    // ************************************************************************
+    // Section 1.
+    // Convert from NORAD (TLE) mean elements to SGP4 elements.
+
+    // We go through two iterations of refining aₒ (semi-major axis) and
+    // nₒ (mean motion)
+
+    //       kₑ ²/₃
+    // a₁ = ----
+    //       nₒ
     let a1 = (ke/n0).powf(2.0/3.0);
+
+    //      3 k₂   (3 cos² iₒ - 1)
+    // δ₁ = - --- ----------------
+    //      2 a₁²   (1 - eₒ²)³/₂
     let d1 = (3.0 * k2  * ( 3.0 * cos2_i0 - 1.0)) / (2.0 * a1 * a1 * ( 1.0 - e02).powf(3.0/2.0));
+
+
     let a0 = a1 * ( 1.0 - (d1/3.0) - (d1 * d1) - (134.0 * d1 * d1 * d1 / 81.0));
     let d0 = (3.0 * k2  * ( 3.0 * cos2_i0 - 1.0)) / (2.0 * a0 * a0 * ( 1.0 - e02).powf(3.0/2.0));
     let n0_dp = n0 / (1.0 + d0);
     let a0_dp = a0 / (1.0 - d0);
 
 
-
+    // TODO: dummy
     // Return coordinates
     coordinates::TEME {
         X: 0.0,
@@ -71,7 +72,7 @@ mod tests {
 
     use tle::TLE;
     use coordinates::TEME;
-    use super::compute;
+    use super::propagate;
 
     #[test]
     fn spacetrack_report_3_sgp4_test_case() {
@@ -85,7 +86,7 @@ mod tests {
         );
 
         // Compute
-        let result0 = compute(tle);
+        let result0 = propagate(tle, 0.0);
         assert_eq!(result0, TEME {
             X: 0.0,
             Y: 0.0,
