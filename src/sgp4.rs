@@ -12,12 +12,26 @@
 
 use tle;
 use coordinates;
+use std::io::Write;
 
+macro_rules! println_stderr(
+    ($($arg:tt)*) => { {
+        let r = writeln!(&mut ::std::io::stderr(), $($arg)*);
+        r.expect("failed printing to stderr");
+    } }
+);
 /// $k_e = 7.43669161 \times 10\^{-2}$  Orbital constant for Earth defined as $\sqrt{GM_{\oplus}}$ where $G$ is Newton’s universal gravitational constant and $M_{\oplus}$ is the mass of the Earth. Units: $(\frac{\mathrm{Earth\ radii}}{\mathrm{minute}})\^{\frac{3}{2}}$
 pub const ke: f64 = 7.43669161e-2;
 
 /// $k_2 = 5.413080 \times 10\^{-4}$  Harmonic gravity constant for the SGP4 model. Defined as $\frac{1}{2}J_2aE\^2$.
 pub const k2: f64 = 5.413080e-4;
+
+/// $R_\oplus = 1.0$  Radius of the Earth (in Earth Radii).
+pub const RE: f64 = 1.0;
+
+/// $6378.135$ kilometers/Earth radii.
+pub const XKMPER: f64 = 6378.135;
+
 
 /// ## Propagate
 ///
@@ -70,13 +84,19 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     //          aₒ
     // aₒ" = --------
     //       (1 - δₒ)
-    let a0_dp = a0 / (1.0 - d0);
+    let ao_dp = a0 / (1.0 - d0);
 
 
     // ************************************************************************
     // Section 2.
-    // Determine perigee so we can deicide which SGP4 variant to use.
+    // Determine apogee and perigee so we can deicide which SGP4 variant to
+    // use later.
 
+    // p = [aₒ"(1 - eₒ) - Rₑ] * XKMPER
+    let perigee = (ao_dp * (1.0 - e0) - RE) * XKMPER;
+
+    // p = [aₒ"(1 + eₒ) - Rₑ] * XKMPER
+    let apogee = (ao_dp * (1.0 + e0) - RE) * XKMPER;
 
 
     // TODO: dummy
