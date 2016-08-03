@@ -58,7 +58,7 @@ pub const XKMPER: f64 = 6378.135;
 pub const S: f64 = 1.01222928;
 
 /// qs4 (?)
-pub const qs4: f64 = 1.88027916e-9;
+pub const QS4: f64 = 1.88027916e-9;
 
 
 /// ## Propagate
@@ -133,16 +133,24 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
 
     // Set parameter "s" depending on perigee of the satellite:
     let s: f64;
-    if perigee < 156.0 {
+    let qs4: f64;
+
+    // Above 156 km we use normal SGP
+    if perigee > 156.0 {
+        // Use original value of s
+        s = S;
+        qs4 = QS4;
+    }
+
+    // Between 156 and 98 km use this modification:
+    else if perigee > 98.0 {
         // s = aₒ"(1 − eₒ) − s + aE
         s = ao_dp * (1.0 - e0) - S + RE;
-    }
-    else if perigee < 98.0 {
-        s = (20.0 / XKMPER) + RE;
+        qs4 = (QS4.powf(1.0/4.0) + S - s).powi(4);
     }
     else {
-        // For everything else use original value of s
-        s = S;
+        s = (20.0 / XKMPER) + RE;
+        qs4 = (QS4.powf(1.0/4.0) + S - s).powi(4);
     }
 
     // θ = cos iₒ
