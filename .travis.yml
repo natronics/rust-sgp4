@@ -7,6 +7,12 @@ matrix:
   allow_failures:
     - rust: nightly
 
+script:
+  - cargo build --verbose
+  - cargo test --verbose
+  - cd examples/
+  - cargo run
+
 after_success: |
     [ $TRAVIS_RUST_VERSION = stable ] &&
     make doc &&
