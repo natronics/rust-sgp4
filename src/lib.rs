@@ -11,15 +11,21 @@ been ported to C. This is a port to Rust.
 
 Original paper: [Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf](../Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf)
 */
-#![deny(missing_docs,
-        trivial_casts, trivial_numeric_casts,
-        unsafe_code,
-        unstable_features,
-        unused_import_braces,
-        unused_qualifications)]
+#![deny(
+    missing_docs,
+    trivial_casts,
+    trivial_numeric_casts,
+    unsafe_code,
+    unstable_features,
+    unused_import_braces,
+    unused_qualifications,
+)]
 
 // TODO: Think about names
-#![allow(non_upper_case_globals)]
+#![allow(
+    non_upper_case_globals,
+    non_snake_case,
+)]
 
 
 pub mod tle;
@@ -48,6 +54,12 @@ pub const RE: f64 = 1.0;
 /// $6378.135$ kilometers/Earth radii.
 pub const XKMPER: f64 = 6378.135;
 
+/// S (?)
+pub const S: f64 = 1.01222928;
+
+/// qs4 (?)
+pub const qs4: f64 = 1.88027916e-9;
+
 
 /// ## Propagate
 ///
@@ -72,7 +84,7 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     // We go through two iterations of refining aₒ (semi-major axis) and
     // nₒ (mean motion)
 
-    //       kₑ ²/₃
+    //       kₑ  ⅔
     // a₁ = ----
     //       nₒ
     let a1 = (ke/n0).powf(2.0/3.0);
@@ -113,6 +125,50 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
 
     // p = [aₒ"(1 + eₒ) - Rₑ] * XKMPER
     let apogee = (ao_dp * (1.0 + e0) - RE) * XKMPER;
+
+
+    // ************************************************************************
+    // Section 3.
+    // Calculate more constants
+
+    // Set parameter "s" depending on perigee of the satellite:
+    let s: f64;
+    if perigee < 156.0 {
+        // s = aₒ"(1 − eₒ) − s + aE
+        s = ao_dp * (1.0 - e0) - S + RE;
+    }
+    else if perigee < 98.0 {
+        s = (20.0 / XKMPER) + RE;
+    }
+    else {
+        // For everything else use original value of s
+        s = S;
+    }
+
+    // θ = cos iₒ
+    let O = cos_i0;
+    let O2 = O * O;
+
+    //        1
+    // ξ = -------
+    //     aₒ" - s
+    let xi = 1.0 / (ao_dp - s);
+    let xi4 = xi.powi(4);
+
+    //               ½
+    // βₒ = (1 − eₒ²)
+    let B = (1.0 - e02).sqrt();
+
+    // η = aₒ"eₒξ
+    let n = ao_dp * e0 * xi;
+    let n2 = n.powi(2);
+    let n3 = n.powi(3);
+    let n4 = n.powi(4);
+
+    //                           -⁷/₂⌈   ⌈    3                ⌉   3   k₂ξ    ⌈ 1   3  ⌉                ⌉
+    // C₂ = (qₒ − s)⁴ξ⁴nₒ"(1 - η²)   |aₒ"|1 + -η² + 4eₒη + eₒη³| + - -------- |-- + -θ²|(8 + 24η² + 3η⁴)|
+    //                               ⌊   ⌊    2                ⌋   2 (1 - η²) ⌊ 2   2  ⌋                ⌋
+    let C2 = qs4 * xi4 * n0_dp * (1.0 - n2).powf(-7.0/2.0) * (ao_dp * (1.0 + (1.5 * n2) + (4.0 * e0 * n) + (e0 * n3)) + 1.5 * (k2 * xi)/(1.0 - n2) * (-0.5 + (1.5 * O2)) * (8.0 + (24.0 * n2) + (3.0 * n4)));
 
 
     // TODO: dummy
