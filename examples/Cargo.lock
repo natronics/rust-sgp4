@@ -1,0 +1,11 @@
+[root]
+name = "SGP4_example"
+version = "0.1.0"
+dependencies = [
+ "sgp4 0.1.0",
+]
+
+[[package]]
+name = "sgp4"
+version = "0.1.0"
+

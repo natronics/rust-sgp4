@@ -27,3 +27,10 @@ fn main() {
 }
 src/main.rs (END)
 ```
+
+## Running This Example Code
+
+The above code is in `src/main.rs`. Run it using cargo:
+
+    $ cargo run
+

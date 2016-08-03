@@ -1,7 +1,5 @@
 extern crate sgp4;
 
-use sgp4;
-
 fn main() {
 
     let tle = sgp4::tle::load_from_str(
