@@ -111,7 +111,7 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
 #[cfg(test)]
 mod tests {
 
-    use tle::TLE;
+    use tle;
     use coordinates::TEME;
     use super::propagate;
 
@@ -120,7 +120,7 @@ mod tests {
         // This testcase is from "SPACETRACK REPORT NO. 3, Models for
         // Propagation of NORAD Element Sets, Hoots & Roehrich 1980
         // pg. 81:
-        let tle = TLE::load_from_str(
+        let tle = tle::load_from_str(
             "Test",
             "1 88888U          80275.98708465  .00073094  13844-3  66816-4 0     8",
             "2 88888  72.8435 115.9689 0086731  52.6988 110.5714 16.05824518   105",
