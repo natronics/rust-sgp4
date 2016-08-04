@@ -75,13 +75,14 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     let n0 = tle.mean_motion;
     let i0 = tle.i;
     let e0 = tle.e;
+    let wo = tle.omega;
     let Bstar = tle.bstar;
 
     // Pre-compute expensive things
     let cos_i0 = i0.cos();
     let sin_io = i0.sin();
-    let cos2_i0 = cos_i0 * cos_i0;
-    let e02 = e0 * e0;
+    let cos2_i0 = cos_i0.powi(2);
+    let e02 = e0.powi(2);
 
 
     // ************************************************************************
@@ -173,7 +174,8 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
 
     //               ½
     // βₒ = (1 − eₒ²)
-    let B = (1.0 - e02).sqrt();
+    let Bo = (1.0 - e02).sqrt();
+    let Bo2 = Bo.powi(2);
 
     // η = aₒ"eₒξ
     let n = ao_dp * e0 * xi;
@@ -193,6 +195,18 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     // C₃ = -----------------------------
     //                 k₂eₒ
     let C3 = (qs4 * xi5 * A30 * n0_dp * RE * sin_io) / (k2 * e0);
+
+    //                                  -⁷/₂⌈⌈              1     1  ⌉      2k₂ξ       ⌈          ⌈    3            1    ⌉   3                                ⌉⌉
+    // C₄ = 2nₒ"(qₒ − s)⁴ξ⁴aₒ"βₒ²(1 - η²)   ||2η(1 + eₒη) + -eₒ + -η³| - ----------- × |3(1 - 3θ²)|1 + -η² - 2eₒη - -eₒη³| + -(1 - θ²)(2η² - eₒη - eₒη³)cos2ωₒ||
+    //                                      ⌊⌊              2     2  ⌋   aₒ"(1 - η²)   ⌊          ⌊    2            2    ⌋   4                                ⌋⌋
+    // This one is really long, so let's break it into some pieces:
+    //     |            C4_1               | |         C4_2          |  |    C4_3    | |             C4_4                |  |               C4_5              |
+    let C4_1 = 2.0 * n0_dp * qs4 * xi4 * ao_dp * Bo2 * (1.0 - n2).powf(-7.0/2.0);
+    let C4_2 = 2.0 * n * (1.0 + e0 * n) + (0.5 * e0) + (0.5 * n3);
+    let C4_3 = (2.0 * k2 * xi) / (ao_dp * (1.0 - n2));
+    let C4_4 = 3.0 * (1.0 - 3.0 * O2) * (1.0 + (1.5 * n2) - (2.0 * e0 * n) - (0.5 * e0 * n3));
+    let C4_5 = 0.75 * (1.0 - O2) * ((2.0 * n2) - (e0 * n) - (e0 * n3)) * (2.0 * wo).cos();
+    let C4 = C4_1 * (C4_2 - (C4_3 * (C4_4 + C4_5)));
 
 
     // TODO: dummy
