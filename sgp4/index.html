@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `sgp4` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, sgp4">
+
+    <title>sgp4 - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'sgp4', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>sgp4</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-0' class='srclink' href='../src/sgp4/src/lib.rs.html#1-268' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'>
+<h1 id='simplified-perturbations-models-sgp4' class='section-header'><a href='#simplified-perturbations-models-sgp4'>Simplified Perturbations Models (SGP4)</a></h1>
+<p>The <em>Simplified Perturbations Models</em> are a set of models used for
+satellites and objects relative to the Earth-centered inertial coordinate
+system. These are often referred to collectively as <strong>SGP4</strong> because of how
+popular that particular code is and how it&#39;s used with nearly all low Earth
+orbit satellites.</p>
+
+<p>The SGP4 and SDP4 models were published as FORTRAN IV in 1988. It has also
+been ported to C. This is a port to Rust.</p>
+
+<p>Original paper: <a href="../Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf">Hoots_Roehrich_1980_SPACETRACK_REPORT_NO_3.pdf</a></p>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='coordinates/index.html'
+                                  title='sgp4::coordinates'>coordinates</a></td>
+                           <td class='docblock short'>
+                                
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='mod' href='tle/index.html'
+                                  title='sgp4::tle'>tle</a></td>
+                           <td class='docblock short'>
+                                
+                           </td>
+                       </tr></table><h2 id='constants' class='section-header'><a href="#constants">Constants</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.A30.html'
+                                  title='sgp4::A30'>A30</a></td>
+                           <td class='docblock short'>
+                                <p>$A_{3,0} = -J_3a_E^3$</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.J3.html'
+                                  title='sgp4::J3'>J3</a></td>
+                           <td class='docblock short'>
+                                <p>$J_3 = -2.53881 \times 10^{-4}$: the third gravitational zonal harmonic of the Earth</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.QS4.html'
+                                  title='sgp4::QS4'>QS4</a></td>
+                           <td class='docblock short'>
+                                <p>qs4 (?)</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.RE.html'
+                                  title='sgp4::RE'>RE</a></td>
+                           <td class='docblock short'>
+                                <p>$R_\oplus = 1.0$  Radius of the Earth (in Earth Radii).</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.S.html'
+                                  title='sgp4::S'>S</a></td>
+                           <td class='docblock short'>
+                                <p>S (?)</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.XKMPER.html'
+                                  title='sgp4::XKMPER'>XKMPER</a></td>
+                           <td class='docblock short'>
+                                <p>$6378.135$ kilometers/Earth radii.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.k2.html'
+                                  title='sgp4::k2'>k2</a></td>
+                           <td class='docblock short'>
+                                <p>$k_2 = 5.413080 \times 10^{-4}$  Harmonic gravity constant for the SGP4 model. Defined as $\frac{1}{2}J_2aE^2$.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class='constant' href='constant.ke.html'
+                                  title='sgp4::ke'>ke</a></td>
+                           <td class='docblock short'>
+                                <p>$k_e = 7.43669161 \times 10^{-2}$  Orbital constant for Earth defined as $\sqrt{GM_{\oplus}}$ where $G$ is Newton’s universal gravitational constant and $M_{\oplus}$ is the mass of the Earth. Units: $(\frac{\mathrm{Earth\ radii}}{\mathrm{minute}})^{\frac{3}{2}}$</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class='fn' href='fn.propagate.html'
+                                  title='sgp4::propagate'>propagate</a></td>
+                           <td class='docblock short'>
+                                
+                           </td>
+                       </tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "sgp4";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

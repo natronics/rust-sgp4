@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `TLE` struct in crate `sgp4`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, TLE">
+
+    <title>sgp4::tle::TLE - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>sgp4</a>::<wbr><a href='index.html'>tle</a></p><script>window.sidebarCurrent = {name: 'TLE', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>sgp4</a>::<wbr><a href='index.html'>tle</a>::<wbr><a class='struct' href=''>TLE</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-6' class='srclink' href='../../src/sgp4/src/tle.rs.html#14-66' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct TLE {
+    pub name: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub sat_number: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>,
+    pub classification: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.char.html'>char</a>,
+    pub int_designator: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+    pub epoch_year: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>,
+    pub epoch_day: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub first_mean_motion: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub second_mean_motion: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub bstar: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub tle_version: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>,
+    pub i: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub raan: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub e: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub omega: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub mean_anomaly: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub mean_motion: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub revolution_number: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>,
+}</pre><div class='docblock'>
+<h2 id='satellite-elements-from-a-tle-file' class='section-header'><a href='#satellite-elements-from-a-tle-file'>Satellite elements from a TLE file</a></h2>
+<p>Read &quot;Two Line Element&quot; files that are a standard way of distributing
+defined orbits.</p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.name'><code>name</code></td><td><div class='docblock'><p>Name of the object</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.sat_number'><code>sat_number</code></td><td><div class='docblock'><p>The Satellite Catalog Number, a sequential 5-digit number assigned by United States Space Command to all Earth orbiting satellites.</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.classification'><code>classification</code></td><td><div class='docblock'><p>Classification (U=Unclassified)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.int_designator'><code>int_designator</code></td><td><div class='docblock'><p>International Designator</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.epoch_year'><code>epoch_year</code></td><td><div class='docblock'><p>Epoch Year</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.epoch_day'><code>epoch_day</code></td><td><div class='docblock'><p>Epoch Day</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.first_mean_motion'><code>first_mean_motion</code></td><td><div class='docblock'><p>First Time Derivative of the Mean Motion</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.second_mean_motion'><code>second_mean_motion</code></td><td><div class='docblock'><p>Second Time Derivative of Mean Motion</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.bstar'><code>bstar</code></td><td><div class='docblock'><p>BSTAR drag term</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.tle_version'><code>tle_version</code></td><td><div class='docblock'><p>Element set number (Incremented when a new TLE is generated for this object)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.i'><code>i</code></td><td><div class='docblock'><p>Inclination</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.raan'><code>raan</code></td><td><div class='docblock'><p>Right ascension of the ascending node</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.e'><code>e</code></td><td><div class='docblock'><p>Eccentricity</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.omega'><code>omega</code></td><td><div class='docblock'><p>Argument of perigee</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.mean_anomaly'><code>mean_anomaly</code></td><td><div class='docblock'><p>Mean Anomaly</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.mean_motion'><code>mean_motion</code></td><td><div class='docblock'><p>Mean Motion (revolutions per day)</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.revolution_number'><code>revolution_number</code></td><td><div class='docblock'><p>Revolution number at epoch (revolutions)</p>
+</div></td></tr></table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "sgp4";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>
