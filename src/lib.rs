@@ -208,6 +208,13 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     let C4_5 = 0.75 * (1.0 - O2) * ((2.0 * n2) - (e0 * n) - (e0 * n3)) * (2.0 * wo).cos();
     let C4 = C4_1 * (C4_2 - (C4_3 * (C4_4 + C4_5)));
 
+    //                               -⁷/₂⌈    11                ⌉
+    // C₅ = 2(qₒ − s)⁴ξ⁴aₒ"βₒ²(1 - η²)   |1 + --η(η + eₒ) + eₒη³|
+    //                                   ⌊     4                ⌋
+    let C5 = 2.0 * qs4 * xi4 * ao_dp * Bo2 * (1.0 - n2).powf(-7.0/2.0) * (1.0 + (2.75 * n * (n + e0)) + (e0 * n3));
+
+
+
 
     // TODO: dummy
     // Return coordinates
