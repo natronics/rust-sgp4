@@ -169,6 +169,8 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     // ξ = -------
     //     aₒ" - s
     let xi = 1.0 / (ao_dp - s);
+    let xi2 = xi.powi(2);
+    let xi3 = xi.powi(3);
     let xi4 = xi.powi(4);
     let xi5 = xi.powi(5);
 
@@ -213,7 +215,18 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     //                                   ⌊     4                ⌋
     let C5 = 2.0 * qs4 * xi4 * ao_dp * Bo2 * (1.0 - n2).powf(-7.0/2.0) * (1.0 + (2.75 * n * (n + e0)) + (e0 * n3));
 
+    // D₂ = 4aₒ"ξC₁²
+    let D2 = 4.0 * ao_dp * xi * C1.powi(2);
 
+    //      4
+    // D₃ = -aₒ"ξ²(17aₒ" + s)C₁³
+    //      3
+    let D3 = (4.0/3.0) * ao_dp * xi2 * (17.0 * ao_dp + s) * C1.powi(3);
+
+    //      2
+    // D₄ = -aₒ"ξ³(221aₒ" + 31s)C₁⁴
+    //      3
+    let D4 = (2.0/3.0) * ao_dp * xi3 * (221.0 * ao_dp + (31.0 * s)) * C1.powi(4);
 
 
     // TODO: dummy
