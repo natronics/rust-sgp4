@@ -60,6 +60,11 @@ pub const S: f64 = 1.01222928;
 /// qs4 (?)
 pub const QS4: f64 = 1.88027916e-9;
 
+/// $J_3 = -2.53881 \times 10\^{-4}$: the third gravitational zonal harmonic of the Earth
+pub const J3: f64 = -2.53881e-4;
+
+/// $A_{3,0} = -J_3a_E\^3$
+pub const A30: f64 = -J3 * RE * RE * RE;
 
 /// ## Propagate
 ///
@@ -70,9 +75,11 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     let n0 = tle.mean_motion;
     let i0 = tle.i;
     let e0 = tle.e;
+    let Bstar = tle.bstar;
 
     // Pre-compute expensive things
     let cos_i0 = i0.cos();
+    let sin_io = i0.sin();
     let cos2_i0 = cos_i0 * cos_i0;
     let e02 = e0 * e0;
 
@@ -162,6 +169,7 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     //     aₒ" - s
     let xi = 1.0 / (ao_dp - s);
     let xi4 = xi.powi(4);
+    let xi5 = xi.powi(5);
 
     //               ½
     // βₒ = (1 − eₒ²)
@@ -177,6 +185,14 @@ pub fn propagate(tle: tle::TLE, time: f64) -> coordinates::TEME {
     // C₂ = (qₒ − s)⁴ξ⁴nₒ"(1 - η²)   |aₒ"|1 + -η² + 4eₒη + eₒη³| + - -------- |-- + -θ²|(8 + 24η² + 3η⁴)|
     //                               ⌊   ⌊    2                ⌋   2 (1 - η²) ⌊ 2   2  ⌋                ⌋
     let C2 = qs4 * xi4 * n0_dp * (1.0 - n2).powf(-7.0/2.0) * (ao_dp * (1.0 + (1.5 * n2) + (4.0 * e0 * n) + (e0 * n3)) + 1.5 * (k2 * xi)/(1.0 - n2) * (-0.5 + (1.5 * O2)) * (8.0 + (24.0 * n2) + (3.0 * n4)));
+
+    // C₁ = B*C₂
+    let C1 = Bstar * C2;
+
+    //      (qₒ − s)⁴ξ⁵A₃₀ nₒ" aE sin iₒ
+    // C₃ = -----------------------------
+    //                 k₂eₒ
+    let C3 = (qs4 * xi5 * A30 * n0_dp * RE * sin_io) / (k2 * e0);
 
 
     // TODO: dummy
